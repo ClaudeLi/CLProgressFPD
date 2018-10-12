@@ -1,9 +1,9 @@
 use_frameworks!
 
-target 'CLProgressHUD_Example' do
-  pod 'CLProgressHUD', :path => '../'
+target 'CLProgressFPD_Example' do
+  pod 'CLProgressFPD', :path => '../'
 
-  target 'CLProgressHUD_Tests' do
+  target 'CLProgressFPD_Tests' do
     inherit! :search_paths
 
     

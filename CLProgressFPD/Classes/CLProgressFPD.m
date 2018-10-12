@@ -1,17 +1,17 @@
 //
-//  CLProgressHUD.m
-//  CLPhotoLib
+//  CLProgressFPD.m
+//  CLProgressFPD
 //
 //  Created by ClaudeLi on 2017/11/22.
 //  Copyright © 2017年 ClaudeLi. All rights reserved.
 //
 
-#import "CLProgressHUD.h"
+#import "CLProgressFPD.h"
 
 #define CLHUDTitleDefaultFont   [UIFont boldSystemFontOfSize:16]
 
 CGFloat whiteSpace = 10.0f;
-@interface CLProgressHUD (){
+@interface CLProgressFPD (){
     NSTimer *_timer;
 }
 
@@ -22,7 +22,7 @@ CGFloat whiteSpace = 10.0f;
 
 @end
 
-@implementation CLProgressHUD
+@implementation CLProgressFPD
 
 - (instancetype)init{
     self = [super init];
@@ -43,9 +43,9 @@ CGFloat whiteSpace = 10.0f;
 - (UIView *)hudView{
     if (!_hudView) {
         _hudView = [UIView new];
-        _hudView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.6];
+        _hudView.backgroundColor = _hudColor?:[[UIColor blackColor] colorWithAlphaComponent:0.6];
         _hudView.layer.masksToBounds = YES;
-        _hudView.layer.cornerRadius = 6.0f;
+        _hudView.layer.cornerRadius = _hudRadius?:6.0f;
         _hudView.alpha = 0;
         [self addSubview:_hudView];
     }
@@ -65,8 +65,8 @@ CGFloat whiteSpace = 10.0f;
     if (!_hudLabel) {
         _hudLabel = [UILabel new];
         _hudLabel.textAlignment = NSTextAlignmentCenter;
-        _hudLabel.font = CLHUDTitleDefaultFont;
-        _hudLabel.textColor = [UIColor whiteColor];
+        _hudLabel.font = _textFont?:CLHUDTitleDefaultFont;
+        _hudLabel.textColor = _textColor?:[UIColor whiteColor];
         _hudLabel.adjustsFontSizeToFitWidth = YES;
         [self.hudView addSubview:_hudLabel];
     }
@@ -78,6 +78,34 @@ CGFloat whiteSpace = 10.0f;
         _mainWidth = (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - 40);
     }
     return _mainWidth;
+}
+
+- (void)setHudColor:(UIColor *)hudColor{
+    _hudColor = hudColor;
+    if (_hudView) {
+        _hudView.backgroundColor = _hudColor;
+    }
+}
+
+- (void)setHudRadius:(CGFloat)hudRadius{
+    _hudRadius = hudRadius;
+    if (_hudView) {
+        _hudView.layer.cornerRadius = _hudRadius;
+    }
+}
+
+- (void)setTextFont:(UIFont *)textFont{
+    _textFont = textFont;
+    if (_hudLabel) {
+        _hudLabel.font = _textFont;
+    }
+}
+
+- (void)setTextColor:(UIColor *)textColor{
+    _textColor = textColor;
+    if (_hudLabel) {
+        _hudLabel.textColor = _textColor;
+    }
 }
 
 - (void)layoutSubviews{
@@ -102,8 +130,9 @@ CGFloat whiteSpace = 10.0f;
     if ([[NSThread currentThread] isMainThread]) {
         [self _showText:text delay:delay canTouch:canTouch];
     }else{
+        __weak __typeof(&*self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self _showText:text delay:delay canTouch:canTouch];
+            [weakSelf _showText:text delay:delay canTouch:canTouch];
         });
     }
 }
@@ -114,7 +143,7 @@ CGFloat whiteSpace = 10.0f;
     }
     _hudIndicatorView.hidden = YES;
     delay = delay?:1.0;
-    CGSize  size = [text sizeWithAttributes:@{NSFontAttributeName:CLHUDTitleDefaultFont}];
+    CGSize  size = [text sizeWithAttributes:@{NSFontAttributeName:_textFont?:CLHUDTitleDefaultFont}];
     CGFloat width = MIN(size.width, self.mainWidth);
     if (canTouch) {
         self.bounds = CGRectMake(0, 0, width + whiteSpace*2, 60);
@@ -141,8 +170,9 @@ CGFloat whiteSpace = 10.0f;
     if ([[NSThread currentThread] isMainThread]) {
         [self _showProgress:canTouch];
     }else{
+        __weak __typeof(&*self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self _showProgress:canTouch];
+            [weakSelf _showProgress:canTouch];
         });
     }
 }
@@ -170,8 +200,9 @@ CGFloat whiteSpace = 10.0f;
     if ([[NSThread currentThread] isMainThread]) {
         [self _showProgressWithText:text canTouch:canTouch];
     }else{
+        __weak __typeof(&*self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self _showProgressWithText:text canTouch:canTouch];
+            [weakSelf _showProgressWithText:text canTouch:canTouch];
         });
     }
 }
@@ -180,7 +211,7 @@ CGFloat whiteSpace = 10.0f;
     if (!text.length) {
         return;
     }
-    CGSize  size = [text sizeWithAttributes:@{NSFontAttributeName:CLHUDTitleDefaultFont}];
+    CGSize  size = [text sizeWithAttributes:@{NSFontAttributeName:_textFont?:CLHUDTitleDefaultFont}];
     CGFloat width = MIN(size.width, self.mainWidth);
     if (canTouch) {
         self.bounds = CGRectMake(0, 0, width + whiteSpace*2, 88);
@@ -202,34 +233,41 @@ CGFloat whiteSpace = 10.0f;
     if ([[NSThread currentThread] isMainThread]) {
         [self _hideProgress];
     }else{
+        __weak __typeof(&*self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self _hideProgress];
+            [weakSelf _hideProgress];
         });
     }
 }
 
 - (void)_hideProgress{
+    __weak __typeof(&*self)weakSelf = self;
     [UIView animateWithDuration:0.2 animations:^{
-        self.alpha = 0;
-        _hudView.alpha = 0;
+        weakSelf.alpha = 0;
+        weakSelf.hudView.alpha = 0;
     } completion:^(BOOL finished) {
-        if (_timer) {
-            [_timer invalidate];
-            _timer = nil;
-        }
-        self.hidden = YES;
-        _hudView.hidden = YES;
-        [_hudIndicatorView stopAnimating];
+        [weakSelf finished];
     }];
+}
+
+- (void)finished{
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
+    self.hidden = YES;
+    _hudView.hidden = YES;
+    [_hudIndicatorView stopAnimating];
 }
 
 - (void)show{
     [self.superview bringSubviewToFront:self];
     self.hidden = NO;
     self.hudView.hidden = NO;
+    __weak __typeof(&*self)weakSelf = self;
     [UIView animateWithDuration:0.2 animations:^{
-        self.alpha = 1;
-        _hudView.alpha = 1;
+        weakSelf.alpha = 1;
+        weakSelf.hudView.alpha = 1;
     }];
 }
 

@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint CLProgressHUD.podspec' to ensure this is a
+# Be sure to run `pod lib lint CLProgressFPD.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'CLProgressHUD'
+  s.name             = 'CLProgressFPD'
   s.version          = '1.0.0'
-  s.summary          = 'Progress HUD.'
+  s.summary          = 'Progress FPD.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,19 +21,19 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/ClaudeLi/CLProgressHUD'
+  s.homepage         = 'https://github.com/claudeli@yeah.net/CLProgressFPD'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'claudeli@yeah.net' => 'ClaudeLi' }
-  s.source           = { :git => 'https://github.com/ClaudeLi/CLProgressHUD.git', :tag => s.version.to_s }
+  s.author           = { 'claudeli@yeah.net' => 'claudeli@yeah.net' }
+  s.source           = { :git => 'https://github.com/claudeli@yeah.net/CLProgressFPD.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'CLProgressHUD/Classes/**/*'
+  s.source_files = 'CLProgressFPD/Classes/**/*'
   
   # s.resource_bundles = {
-  #   'CLProgressHUD' => ['CLProgressHUD/Assets/*.png']
+  #   'CLProgressFPD' => ['CLProgressFPD/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'

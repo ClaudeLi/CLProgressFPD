@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:CLProgressHUD.xcodeproj">
+      location = "self:CLProgressFPD.xcodeproj">
    </FileRef>
 </Workspace>

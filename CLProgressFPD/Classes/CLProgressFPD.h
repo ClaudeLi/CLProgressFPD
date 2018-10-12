@@ -1,6 +1,6 @@
 //
-//  CLProgressHUD.h
-//  CLPhotoLib
+//  CLProgressFPD.h
+//  CLProgressFPD
 //
 //  Created by ClaudeLi on 2017/11/22.
 //  Copyright © 2017年 ClaudeLi. All rights reserved.
@@ -8,7 +8,27 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CLProgressHUD : UIView
+@interface CLProgressFPD : UIView
+
+/**
+ HUD background color default blackColor.alpha:0.6;
+ */
+@property (nonatomic, strong) UIColor *hudColor;
+
+/**
+ HUD layer corner radius, default 6.0f
+ */
+@property (nonatomic, assign) CGFloat hudRadius;
+
+/**
+ default [UIFont boldSystemFontOfSize:16]
+ */
+@property (nonatomic, strong) UIFont  *textFont;
+
+/**
+ default [UIColor whiteColor]
+ */
+@property (nonatomic, strong) UIColor *textColor;
 
 - (instancetype)init;
 - (instancetype)initWithSuperView:(UIView *)view;
@@ -20,10 +40,11 @@
 - (void)showText:(NSString *)text delay:(NSTimeInterval)delay canTouch:(BOOL)canTouch;
 
 - (void)showProgress:(BOOL)canTouch;
-// canTouch:NO
+// default canTouch:NO
 - (void)showProgressWithText:(NSString *)text;
 - (void)showProgressWithText:(NSString *)text canTouch:(BOOL)canTouch;
 
+// hide
 - (void)hideProgress;
 
 @end

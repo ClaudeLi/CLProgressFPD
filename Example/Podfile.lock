@@ -1,16 +1,16 @@
 PODS:
-  - CLProgressHUD (1.0.0)
+  - CLProgressFPD (1.0.0)
 
 DEPENDENCIES:
-  - CLProgressHUD (from `../`)
+  - CLProgressFPD (from `../`)
 
 EXTERNAL SOURCES:
-  CLProgressHUD:
+  CLProgressFPD:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CLProgressHUD: 7df6dd1bb90c581f1f8a43c180e12b3680ec1fa0
+  CLProgressFPD: ed964076d0acccf826a39f246407c7d8b726a8f7
 
-PODFILE CHECKSUM: 7c5235bc0f597d7ff98c82dcf0ce0e0ff91db3f1
+PODFILE CHECKSUM: db9a2cd9081af26bca1f23a080959d3564047255
 
 COCOAPODS: 1.5.3
